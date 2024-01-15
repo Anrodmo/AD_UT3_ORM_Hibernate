@@ -7,7 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/MySQL JDBC Driver 8.0.33"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HibernateLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jakarta"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
