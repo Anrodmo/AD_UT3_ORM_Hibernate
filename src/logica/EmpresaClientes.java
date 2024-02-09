@@ -12,7 +12,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import miEmpresa.Clientes;
-import miEmpresa.Productos;
 
 public class EmpresaClientes {
 	/* Creamos una sesión que se usará para todas las conexiones*/
@@ -27,6 +26,10 @@ public class EmpresaClientes {
 		sf.close();
 	}
 	
+	
+	/**
+	 * Método que recoge y muestra todos los registros de la tabla clientes
+	 */
 	public void mostrarClientes(){
 		Session sesion = sf.openSession();  // abro sesión del SesionFactory
 		Transaction tx = null;      // creamos una transacción		        
@@ -53,8 +56,13 @@ public class EmpresaClientes {
 
 	}
 	
-	// no se incluye el id porque es auto incrementable
-	public void añadirCliente(String nombre, String pais ){
+
+	/**
+	 * Método  que añade un cliente a la tabla clientes
+	 * @param nombre  Nombre del cliente
+	 * @param pais    País del cliente
+	 */
+	public void añadirCliente(String nombre, String pais ){  // no se incluye el id porque es auto incrementable
 		// Abrimos la sesión para hacer el insert
 		Session session=sf.openSession();
 					// creamos una transacción		
@@ -79,6 +87,10 @@ public class EmpresaClientes {
 		}
 	}
 	
+	/**
+	 * Método que elimina un cliente de la BBDD a partir de su ID
+	 * @param id  ID del cliente que se quiere eliminar.
+	 */
 	public void borrarCliente(int id) {
 		Clientes c; // aqui voy a guardar el cliente que borro
 		Session session=sf.openSession();
@@ -105,6 +117,13 @@ public class EmpresaClientes {
 		}		
 	}
 	
+	/**
+	 * Método que actual0zia un cliente a partir de su ID.. Según los parámetros del ejercicio
+	 * este método debía pedir los datos a actualizar. Se llama al método auxiliar 
+	 *  Cliente pedirDatosCliente(Cliente c) que dado un cliente pide los datos nuevos y devuelve el objeto
+	 *  actualizado.
+	 * @param id  del cliente a actualizar
+	 */
 	public void actualizarCliente(int id) {
 		Clientes c; // aqui voy a guardar el cliente que borro
 		Session session=sf.openSession();
@@ -131,6 +150,11 @@ public class EmpresaClientes {
 		}		
 	}
 	
+	/**
+	 * Método auxiliar para actualizar datos de un cliente
+	 * @param c Cliente a actualizar datos
+	 * @return  Cliente actualizado
+	 */
 	private Clientes pedirDatosCliente(Clientes c) {
 		Scanner teclado = new Scanner(System.in);
 		String auxiliar;
@@ -153,6 +177,10 @@ public class EmpresaClientes {
 		return c;
 	}
 	
+	/**
+	 * Método que elimina todos los cliente de la BBDD según su nombre
+	 * @param nombre de clientes que se desean eliminar.
+	 */
 	public void borrarCliente(String nombre) {
 		Session sesion = sf.openSession();  // abro sesión del SesionFactory
 		Transaction tx = null;    // consulta parametrizada

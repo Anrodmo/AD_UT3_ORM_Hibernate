@@ -17,6 +17,9 @@ import org.hibernate.cfg.Configuration;
 import miEmpresa.*;
 
 
+/**
+ * 
+ */
 public class HibernateEnterprise {
 	/* Creamos una sesión que se usará para todas las conexiones*/
 	private static SessionFactory sf;
@@ -26,6 +29,14 @@ public class HibernateEnterprise {
 		sf=new Configuration().configure().buildSessionFactory();
 	}
 	
+	
+	
+	/**
+	 * Método que añade un Producto a la BBDD a aprtir de sus atributos
+	 * @param id
+	 * @param nombre
+	 * @param precio
+	 */
 	public void addProduct(int id,String nombre, double precio ){
 		// Abrimos la sesión para hacer el insert
 		Session session=sf.openSession();
@@ -55,6 +66,9 @@ public class HibernateEnterprise {
 		sf.close();
 	}
 	
+	/**
+	 * Método que muestra por consola todos los registros de la tabla Productos
+	 */
 	public void mostrarProductos(){
 		Session sesion = sf.openSession();  // abro sesión del SesionFactory
 		Transaction tx = null;      // creamos una transacción		        
@@ -81,6 +95,11 @@ public class HibernateEnterprise {
 
 	}
 	
+	/**
+	 * Método que muestra por consola todos los registros de la tabla productos que tengan el
+	 * nombre facilitado.
+	 * @param nombre
+	 */
 	public void mostrarProductosporNombre(String nombre) {
 		Session sesion = sf.openSession();  // abro sesión del SesionFactory
 		Transaction tx = null;    // consulta parametrizada
@@ -114,6 +133,11 @@ public class HibernateEnterprise {
 			}		
 	}
 	
+	/**
+	 * Método que muestra por consola el precio de todos los productos cuyo nombre coincida con el
+	 * facilitado por parámetro. 
+	 * @param nombre
+	 */
 	public void precioDe(String nombre) {
 		Session sesion = sf.openSession();  // abro sesión del SesionFactory
 		Transaction tx = null;    // consulta parametrizada
@@ -145,6 +169,10 @@ public class HibernateEnterprise {
 			}		
 	}
 	
+	/**
+	 * Método que muestra por consola el producto con la ID facilitada
+	 * @param id
+	 */
 	public void buscaProducto(int id) {
 		Session sesion = sf.openSession();  // abro sesión del SesionFactory
 		Transaction tx = null;              // creamos una transacción		
@@ -173,6 +201,10 @@ public class HibernateEnterprise {
 		}
 	}
 	
+	/**
+	 * Método que muestra por consola todos los productos ordenados por precio
+	 * en orden ascendente. 
+	 */
 	public void mostrarProductosOrdenadosPorPrecio() {
 		Session sesion = sf.openSession();  // abro sesión del SesionFactory
 		Transaction tx = null;              // creamos una transacción		
@@ -200,6 +232,11 @@ public class HibernateEnterprise {
 	
 	
 	
+	/**
+	 * Método que busca un registro producto por su ID en la BBDD y devuelve un objeto Producto con sus atributos.
+	 * @param id
+	 * @return Producto p
+	 */
 	public Productos encontrarProductoPorId(int id) {
 		Session session = sf.openSession();
 		Transaction tx = null;  // creamos una transacción		
@@ -230,6 +267,10 @@ public class HibernateEnterprise {
 	}
 	
 	
+	/**
+	 * Método que borra un producto a partir de su id.
+	 * @param id
+	 */
 	public void borrarProductoPorId(int id) {
 		Productos p = new Productos();
 		Session session=sf.openSession();
@@ -237,13 +278,13 @@ public class HibernateEnterprise {
 		
 		try{
 			tx=session.beginTransaction();
-			p=(Productos)session.load(Productos.class, id);
-			session.delete(p);
-			tx.commit();
+			p=(Productos)session.load(Productos.class, id);  // primero cargamos el producto en la session
+			session.delete(p);  // luego lo borramos
+			tx.commit();   // confirmamos
 			System.out.printf("Objeto eliminado de la BBDD: %s, %s, %s \n",p.getId(),p.getNombre(),p.getPrecio());
 		}catch(Exception e){
 			if(tx!=null){
-				tx.rollback();
+				tx.rollback();  // o volvemos atrás si ha habido algún error
 			}
 		}finally{
 			session.close();
@@ -251,6 +292,12 @@ public class HibernateEnterprise {
 		
 	}
 	
+	/**
+	 * Método que edita un registro de producto en la BBDD a partir de los datos facilitados
+	 * @param id
+	 * @param nuevoNombre
+	 * @param nuevoPrecio
+	 */
 	public void editarProductoPorId(int id, String nuevoNombre, double nuevoPrecio) {
 		Productos p = new Productos();
 		Session session=sf.openSession();
@@ -260,23 +307,23 @@ public class HibernateEnterprise {
 			tx=session.beginTransaction();
 			System.out.println("Updating a value");
 			System.out.println("Before updating, we need to load the object");
-			p=(Productos)session.load(Productos.class, id);//we load the pen drive
-			p.setPrecio(nuevoPrecio);//we change the properties 
+			p=(Productos)session.load(Productos.class, id);//cargo el producto en la sesion
+			p.setPrecio(nuevoPrecio);//le asignamos las nuevas propiedades
 			p.setNombre(nuevoNombre);
-			session.update(p);//we update the values in the database
-			tx.commit();
+			session.update(p);//lo modificamos en la BBDD con las nuevas propiedades
+			tx.commit();  // si todo va bien confirmamos los cambios
 			System.out.println("Object updated");
 			
 		// añadimos esta excepción para poder tratar el caso	
 		}catch(ObjectNotFoundException ex) {
 			// podemos hacer que si no existe lo cree
-			//this.addProduct(id, nuevoNombre, nuevoPrecio);
+			// this.addProduct(id, nuevoNombre, nuevoPrecio);
 			// o solo que nos avise de que no existe producto con ese id
 			System.out.println("No existe un Producto con el id: "+id);
 		}catch(Exception e){
 			System.out.println(e);
 			if(tx!=null){
-				tx.rollback();
+				tx.rollback();  // si hay error revertimos
 			}
 		}finally{
 			session.close();
