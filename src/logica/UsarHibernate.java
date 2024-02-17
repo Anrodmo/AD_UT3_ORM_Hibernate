@@ -15,9 +15,8 @@ public class UsarHibernate {
 		System.out.println("==================================================\n\n");
 				
 		conexionHibernateClientes.mostrarClientes();
-		conexionHibernateClientes.borrarCliente("perico");
-		conexionHibernateClientes.borrarCliente("ixana");
-		conexionHibernateClientes.mostrarClientes();
+		System.out.println("\n\n");
+		conexionHibernateClientes.buscarPaisDe("luis");
 		conexionHibernateClientes.cerrarSesionFactory();
 		
 		

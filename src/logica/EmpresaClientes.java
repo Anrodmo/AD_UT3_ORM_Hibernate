@@ -125,7 +125,7 @@ public class EmpresaClientes {
 	 * @param id  del cliente a actualizar
 	 */
 	public void actualizarCliente(int id) {
-		Clientes c; // aqui voy a guardar el cliente que borro
+		Clientes c; // aquí voy a guardar el cliente que borro
 		Session session=sf.openSession();
 		Transaction tx=null;  // creamos una transacción				
 		try{
@@ -211,6 +211,74 @@ public class EmpresaClientes {
 		}finally {
     	  sesion.close(); 
 		}		
+	}
+	
+	/**
+	 * Método que recoge y muestra todos los registros de la tabla clientes de un país
+	 * @param País de los clientes que se quieren mostrar
+	 */
+	public void mostrarClientesPorPais(String pais){
+		Session sesion = sf.openSession();  // abro sesión del SesionFactory
+		Transaction tx = null;      // creamos una transacción
+		String query = "FROM Clientes c Where c.pais = :pais";
+		
+		try {	
+	         tx = sesion.beginTransaction();
+	         List clientesPais = (sesion.createQuery(query))
+	        		 .setParameter("pais", pais)
+	        		 .list(); 
+
+	         Iterator it =  clientesPais.iterator();
+	         System.out.println("Hay un total de "+clientesPais.size()+" clientes de "+pais);
+	         while(it.hasNext()){
+	        // for (Iterator iterator = allproducts.iterator(); iterator.hasNext();){
+	            Clientes c = (Clientes) it.next(); 
+	            System.out.print("Id: " + c.getId()); 
+	            System.out.print("  ,Nombre: " + c.getNombre());	            
+	            System.out.println("  ,Pais: " + c.getPais());  
+	         }
+	         tx.commit();
+	      } catch (HibernateException e) {
+	         if (tx!=null) tx.rollback(); //si hay una excepción hacemos rollback para evitar errores en la BBDD
+	         e.printStackTrace(); 
+	      } finally {
+	    	  sesion.close(); 
+	      }
+
+	}
+	
+	
+	/**
+	 * Método que muestra una relación de todos los países de los clientes con el nombre facilitado
+	 * @param Nombre del cliente cuyo país se quiere mostrar
+	 */
+	public void buscarPaisDe(String nombre){
+		Session sesion = sf.openSession();  // abro sesión del SesionFactory
+		Transaction tx = null;      // creamos una transacción
+		String query = "FROM Clientes c Where c.nombre = :nombre";
+		
+		try {	// no doy por hecho que haya un único cliente con ese nombre
+	         tx = sesion.beginTransaction();
+	         List clientesPais = (sesion.createQuery(query))
+	        		 .setParameter("nombre", nombre)
+	        		 .list(); 
+
+	         Iterator it =  clientesPais.iterator();
+	         System.out.println("Relaciones de paises de clientes con el nombre: "+nombre);
+	         while(it.hasNext()){
+	        // for (Iterator iterator = allproducts.iterator(); iterator.hasNext();){
+	            Clientes c = (Clientes) it.next();           
+	            System.out.print("Nombre: " + c.getNombre());	            
+	            System.out.println("  ,Pais: " + c.getPais());  
+	         }
+	         tx.commit();
+	      } catch (HibernateException e) {
+	         if (tx!=null) tx.rollback(); //si hay una excepción hacemos rollback para evitar errores en la BBDD
+	         e.printStackTrace(); 
+	      } finally {
+	    	  sesion.close(); 
+	      }
+
 	}
 
 }
