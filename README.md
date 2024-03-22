@@ -1,7 +1,7 @@
 <h1>Proyecto de Hibernate en Eclipse</h1>
+</br><div></div>Proyecto para obtener las clases desde una BBDD MySQL existente.<div>
 <div>Dump de la BBDD en /dump</div>
-<div>Operativo con Java 1.8</div>
-<div>Añadida carpeta /hiernate con los jar utilizados.</div>
+<div>Añadida carpeta /hibernate con los jar utilizados.</div>
 <br/>
 Recursos utilizados:
 <ul>
